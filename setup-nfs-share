@@ -1,0 +1,23 @@
+ set up an NFS (Network File System) share on Red Hat Enterprise Linux:
+
+    Install the NFS server packages:
+    sudo yum install nfs-utils
+
+    Create a directory to share. For example:
+    sudo mkdir -p /var/nfsshare
+
+    Modify the permissions of the directory to give read-write access to the users that you want to be able to access the share:
+    sudo chmod -R 775 /var/nfsshare
+
+    Modify the ownership of the directory to give ownership to the users that you want to be able to access the share:
+    sudo chown nfsuser:nfsgroup /var/nfsshare
+
+    Edit the /etc/exports file and add the following line:
+    /var/nfsshare client1(rw,sync,no_root_squash)
+    This exports the /var/nfsshare directory to the client with the hostname client1, with read-write permissions and enables file synchronization and root squashing. Root squashing means that the root user on the client is mapped to the anonymous user on the server, which prevents the root user on the client from having root access to the NFS share.
+
+    Start the NFS server:
+    sudo systemctl start nfs-server
+
+    Enable the NFS server to start automatically at boot:
+    sudo systemctl enable nfs-server
